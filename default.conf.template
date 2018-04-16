@@ -1,6 +1,6 @@
 server {
-    listen ${NGINX_PORT};
-    listen [::]:${NGINX_PORT};
+    listen ${NGINX_PORT_HTTP_80};
+    listen [::]:${NGINX_PORT_HTTP_80};
 
     location / {
         # Some of these might not be required for other services
@@ -9,9 +9,68 @@ server {
         proxy_set_header X-Forwarded-Proto ${DOLLAR}scheme;
         proxy_set_header X-Forwarded-Port ${DOLLAR}server_port;
         proxy_set_header X-Forwarded-For ${DOLLAR}proxy_add_x_forwarded_for;
-        proxy_pass ${NGINX_HOST};
+        proxy_pass ${NGINX_HOST_HTTP_80};
         proxy_http_version 1.1;
         proxy_read_timeout 900s;
+        access_log  /dev/stdout;
+        error_log  /dev/stdout info;
+    }
+}
+
+server {
+    listen ${NGINX_PORT_HTTP_8080};
+    listen [::]:${NGINX_PORT_HTTP_8080};
+
+    location / {
+        # Some of these might not be required for other services
+        # proxy_pass is the most important
+        proxy_set_header Host ${DOLLAR}host;
+        proxy_set_header X-Forwarded-Proto ${DOLLAR}scheme;
+        proxy_set_header X-Forwarded-Port ${DOLLAR}server_port;
+        proxy_set_header X-Forwarded-For ${DOLLAR}proxy_add_x_forwarded_for;
+        proxy_pass ${NGINX_HOST_HTTP_8080};
+        proxy_http_version 1.1;
+        proxy_read_timeout 900s;
+        access_log  /dev/stdout;
+        error_log  /dev/stdout info;
+    }
+}
+
+server {
+    listen ${NGINX_PORT_HTTPS};
+    listen [::]:${NGINX_PORT_HTTPS};
+
+    location / {
+        # Some of these might not be required for other services
+        # proxy_pass is the most important
+        proxy_set_header Host ${DOLLAR}host;
+        proxy_set_header X-Forwarded-Proto ${DOLLAR}scheme;
+        proxy_set_header X-Forwarded-Port ${DOLLAR}server_port;
+        proxy_set_header X-Forwarded-For ${DOLLAR}proxy_add_x_forwarded_for;
+        proxy_pass ${NGINX_HOST_HTTPS};
+        proxy_http_version 1.1;
+        proxy_read_timeout 900s;
+        access_log  /dev/stdout;
+        error_log  /dev/stdout info;
+    }
+}
+
+server {
+    listen ${NGINX_PORT_RDS};
+    listen [::]:${NGINX_PORT_RDS};
+
+    location / {
+        # Some of these might not be required for other services
+        # proxy_pass is the most important
+        proxy_set_header Host ${DOLLAR}host;
+        proxy_set_header X-Forwarded-Proto ${DOLLAR}scheme;
+        proxy_set_header X-Forwarded-Port ${DOLLAR}server_port;
+        proxy_set_header X-Forwarded-For ${DOLLAR}proxy_add_x_forwarded_for;
+        proxy_pass ${NGINX_HOST_RDS};
+        proxy_http_version 1.1;
+        proxy_read_timeout 900s;
+        access_log  /dev/stdout;
+        error_log  /dev/stdout info;
     }
 }
 

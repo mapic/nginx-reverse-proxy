@@ -1,0 +1,20 @@
+version: '2'
+services:
+  nginx:
+    build: .
+    ports: 
+      - "80:80"
+      - "8080:8080"
+      - "8081:8081"
+      - "5432:5432"
+    environment:
+      NGINX_PORT_HTTP_80: '80'
+      NGINX_HOST_HTTP_80: http://10.0.1.239:80
+      NGINX_PORT_HTTP_8080: '8080'
+      NGINX_HOST_HTTP_8080: http://10.0.1.239:8080
+      NGINX_PORT_HTTPS: '443'
+      NGINX_HOST_HTTPS: http://10.0.1.239:443
+      NGINX_PORT_RDS: '5432'
+      NGINX_HOST_RDS: http://postgis-database.ciw2fmpzpnat.eu-central-1.rds.amazonaws.com:5432
+    stdin_open: true
+    tty: true
